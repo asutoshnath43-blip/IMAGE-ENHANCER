@@ -73,7 +73,7 @@ def parse_multipart_form_data(
     body: bytes, content_type: str
 ) -> Tuple[Dict[str, str], Optional[Tuple[str, bytes]]]:
     """
-    Parse multipart/form-data request body using Python standard library `email.parser`.
+    Parse multipart/form-data request body.
     Returns (fields_dict, (filename, file_bytes) or None).
     """
     header_bytes = f"Content-Type: {content_type}\r\n\r\n".encode("utf-8")
@@ -83,13 +83,19 @@ def parse_multipart_form_data(
     uploaded_file: Optional[Tuple[str, bytes]] = None
 
     if msg.is_multipart():
-        for part in msg.iter_parts():
+        for part in msg.walk():
+            if part.is_multipart():
+                continue
+
             disposition = part.get_content_disposition()
+
             if disposition != "form-data":
                 continue
+
             name = part.get_param("name", header="content-disposition")
             filename = part.get_filename()
             payload = part.get_payload(decode=True) or b""
+
             if filename:
                 uploaded_file = (filename, payload)
             elif name:
