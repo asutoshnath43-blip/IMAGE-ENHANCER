@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClearScale 1080p — Image Enhancer</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+    <div class="app-shell">
+        <header class="top-bar">
+            <div class="brand">
+                <span class="brand-badge">1080p HD</span>
+                <h1>ClearScale Image Enhancer</h1>
+            </div>
+            <p class="subtitle">Upload a low-resolution image to upscale and restore detail at Full HD 1080p</p>
+        </header>
+
+        <main class="workspace">
+            <!-- Left Panel: Upload & Minimalistic Controls -->
+            <section class="panel controls-panel">
+                <div id="drop-zone" class="drop-zone" tabindex="0" role="button" aria-label="Upload image">
+                    <input type="file" id="file-input" accept=".png,.jpg,.jpeg,.webp,.bmp,.tiff" hidden />
+                    <div class="drop-icon">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                    </div>
+                    <p class="drop-title" id="selected-filename">Drop image here or click to browse</p>
+                    <span class="drop-hint">Supports PNG, JPG, WEBP, BMP, TIFF</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="preset-select">Enhancement Mode</label>
+                    <select id="preset-select">
+                        <option value="balanced" selected>Balanced HD (Natural Detail & Contrast)</option>
+                        <option value="crisp">Ultra Crisp & Sharp (Edges & Text)</option>
+                        <option value="photo_restore">Low-Light / Noisy JPEG Restoration</option>
+                        <option value="illustration">Digital Art & Illustration</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="scaling-select">1080p Framing</label>
+                    <select id="scaling-select">
+                        <option value="fit_1080p" selected>Preserve Original Aspect Ratio (1080p Class)</option>
+                        <option value="exact_1920x1080_pad">Exact 1920×1080 (Ambient HD Backdrop)</option>
+                        <option value="exact_1920x1080_crop">Exact 1920×1080 (Full-Frame Center Fill)</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="format-select">Export Format</label>
+                        <select id="format-select">
+                            <option value="PNG" selected>PNG (Lossless)</option>
+                            <option value="JPEG">JPG (95% High Quality)</option>
+                            <option value="WEBP">WEBP (Modern HD)</option>
+                        </select>
+                    </div>
+                    <div class="form-group half">
+                        <label for="sharpen-slider">Sharpness (<span id="sharpen-val">1.2x</span>)</label>
+                        <input type="range" id="sharpen-slider" min="0.4" max="2.2" step="0.1" value="1.2" />
+                    </div>
+                </div>
+
+                <button id="enhance-btn" class="primary-btn" disabled>
+                    Enhance to 1080p HD
+                </button>
+
+                <button id="sample-btn" class="secondary-btn" type="button">
+                    Try Built-in Low-Res Sample
+                </button>
+
+                <div id="status-box" class="status-box hidden"></div>
+            </section>
+
+            <!-- Right Panel: Before / After Preview & Download -->
+            <section class="panel preview-panel">
+                <div class="preview-header">
+                    <div class="view-tabs">
+                        <button type="button" class="tab-btn active" data-view="split">Side-by-Side</button>
+                        <button type="button" class="tab-btn" data-view="enhanced">Enhanced 1080p</button>
+                        <button type="button" class="tab-btn" data-view="original">Original</button>
+                    </div>
+                    <div class="action-links">
+                        <a id="download-btn" class="download-btn hidden" href="#" download>
+                            Download 1080p Image
+                        </a>
+                    </div>
+                </div>
+
+                <div id="empty-state" class="empty-state">
+                    <p>Upload an image on the left or click <strong>Try Built-in Low-Res Sample</strong> to preview 1080p enhancement.</p>
+                </div>
+
+                <div id="preview-stage" class="preview-stage hidden">
+                    <div class="image-card" id="orig-card">
+                        <div class="card-tag">Original <span id="orig-dims">—</span></div>
+                        <div class="img-wrapper">
+                            <img id="orig-img" alt="Original uploaded preview" />
+                        </div>
+                    </div>
+                    <div class="image-card" id="enh-card">
+                        <div class="card-tag accent">Enhanced 1080p <span id="enh-dims">—</span></div>
+                        <div class="img-wrapper">
+                            <img id="enh-img" alt="Enhanced 1080p output preview" />
+                        </div>
+                    </div>
+                </div>
+
+                <footer id="metrics-bar" class="metrics-bar hidden">
+                    <span id="metric-scale">Scale: —</span>
+                    <span id="metric-time">Time: —</span>
+                    <span id="metric-size">Output Size: —</span>
+                </footer>
+            </section>
+        </main>
+    </div>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
